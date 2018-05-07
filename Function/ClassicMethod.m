@@ -10,7 +10,7 @@ function ClassicMethod(s)
     set(0,'DefaultFigureVisible','off')
     bpf = BPF(1001, 0.5, 30, 256);
     set(0,'DefaultFigureVisible','on');
-    for i=2:2
+    for i=2:9
         s.test(i,:) = FilterDFT(s.test(i,:), bpf);
     end
     %extract trials
@@ -24,10 +24,16 @@ function ClassicMethod(s)
     time = 0:1/256:0.8;
     %plot
     figure(1); cla;
-    hold on
-    for i=1:1
-        plot(time, reshape(targetERP(i,1,:), [1 205]));
-            plot(time, reshape(targetERP(i,1,:)-targetSTD(1,1,:), [1 205]),...
-            time, reshape(targetERP(i,1,:)+targetSTD(1,1,:), [1 205]), 'LineWidth', 4);
+    for i=1:8
+        subplot(2, 4, i);
+        hold on
+        plot(time, reshape(targetERP(i,1,:), [1 205]), 'LineWidth', 2, 'Color', 'r');
+        plot(time, reshape(nontargetERP(i,1,:), [1 205]), 'LineWidth', 2, 'Color', 'b');
+        legend('target','nontarget');
+        title(strcat('Electrode ',num2str(i)));
+        plot(time, reshape(targetERP(i,1,:)-targetSTD(1,1,:), [1 205]),...
+            time, reshape(targetERP(i,1,:)+targetSTD(1,1,:), [1 205]), 'Color', 'r');
+        plot(time, reshape(nontargetERP(i,1,:)-nontargetSTD(1,1,:), [1 205]),...
+            time, reshape(nontargetERP(i,1,:)+nontargetSTD(1,1,:), [1 205]), 'Color', 'b');
     end
 end
