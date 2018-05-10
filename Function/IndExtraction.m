@@ -20,7 +20,7 @@ function [target, nontarget] = SimpleIndExtraction(X)
     X1=cat(2,X,[0;0]);
     X2=cat(2,[0;0],X);
     integers = 1:length(X1);
-    starts = X1(1,:)~=0 & X2(1,:)~=X1(1,:);
-    target = integers(starts & X1(2,:)==1);
-    nontarget = integers(starts & X1(2,:)==0);
+    starts = ((X1(1,:)~=0) & (X2(1,:)~=X1(1,:)));
+    target = integers(starts & (X1(2,:)==1));
+    nontarget = integers(starts & (X1(2,:)==0));
 end

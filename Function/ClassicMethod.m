@@ -9,11 +9,11 @@ function ClassicMethod(subject_id)
     %load root
     [folder, ~, ~] = fileparts(which('ClassicMethod'));
     root = strcat(folder, '/../');
-    f1 = figure('visible', 'on');
+    f1 = figure('visible', 'off');
     %filter
     s = GetFilteredSubject(subject_id);
     %extract trials
-    [~,~,target, nontarget] = TrialExtraction(s);
+    [~,~, target, nontarget] = TrialExtraction(s);
     %calculate ERP
     targetERP = mean(target(2:9,:,:),2);
     nontargetERP = mean(nontarget(2:9,:,:),2);
@@ -39,15 +39,15 @@ function ClassicMethod(subject_id)
             set(hleg, 'Location', 'BestOutside');
         end
         title(strcat('Electrode ',num2str(i)));
-        plot(time, reshape(targetERP(i,1,:)-targetSTD(1,1,:), [1 205]),...
-            time, reshape(targetERP(i,1,:)+targetSTD(1,1,:), [1 205]), 'Color', 'r');
-        plot(time, reshape(nontargetERP(i,1,:)-nontargetSTD(1,1,:), [1 205]),...
-            time, reshape(nontargetERP(i,1,:)+nontargetSTD(1,1,:), [1 205]), 'Color', 'b');
+        plot(time, reshape(targetERP(i,1,:)-targetSTD(i,1,:), [1 205]),...
+            time, reshape(targetERP(i,1,:)+targetSTD(i,1,:), [1 205]), 'Color', 'r');
+        plot(time, reshape(nontargetERP(i,1,:)-nontargetSTD(i,1,:), [1 205]),...
+            time, reshape(nontargetERP(i,1,:)+nontargetSTD(i,1,:), [1 205]), 'Color', 'b');
     end
     % Saving image as png to output folder
     f1.Position(3) = 1400;
     f1.Position(4) = 700;
-    all_fig_path = strcat(root, 'output/phase3/Subject', num2str(subject_id), '.png');
+    all_fig_path = strcat(root, 'output/phase3/subject', num2str(subject_id), '.png');
     saveas(gcf, all_fig_path);
     close(f1);
 end
