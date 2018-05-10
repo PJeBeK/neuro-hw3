@@ -43,8 +43,10 @@ function [model, train_accr, test_accr, cross_accr, train_word, test_word] = Sub
     f1 = figure('visible', 'off');
     
     coeffs = model.Coeffs(1, 2).Linear;
-    targetERP = mean(train_a(2:9,:,:),2);
-    nontargetERP = mean(train_b(2:9,:,:),2);   
+    targetERP = reshape(mean(train_a(:,2:9,:),1), 8, []);
+    nontargetERP = reshape(mean(train_b(:,2:9,:),1), 8, []);   
+    targetSTD = reshape(std(train_a(:,2:9,:),0,1)/sqrt(size(train_a,1)), 8, []);
+    nontargetSTD = reshape(std(train_b(:,2:9,:),0,1)/sqrt(size(train_b,1)), 8,[]);
     electrode_count = size(train_X, 2) / 8;
     time = 0:1/64:0.8;
     %plot
@@ -58,14 +60,19 @@ function [model, train_accr, test_accr, cross_accr, train_word, test_word] = Sub
         end
         hold on
         cur_coeffs = coeffs(electrode_count * (i - 1) + 1:electrode_count * i);
-        %cur_coeffs = ur_coeffs / sqrt(dot(cur_coeffs, cur_coeffs));
-        plot(time, targetERP(i, :), 'Color', 'r');
-        plot(time, cur_coeffs, 'Color', 'b');
+        plot(time, cur_coeffs .* targetERP(i, :)',  'LineWidth', 1, 'Color', 'r');
+        plot(time, cur_coeffs .* nontargetERP(i, :)',  'LineWidth', 1, 'Color', 'b');
         if(i==4)
             hleg = legend('target','non-target');
             set(hleg, 'Location', 'BestOutside');
         end
         title(strcat('Electrode ',num2str(i)));
+        %{
+        plot(time, cur_coeffs .* (targetERP(i, :)-targetSTD(i,:))', ':', ...
+            time, cur_coeffs .* (targetERP(i, :)+targetSTD(i,:))', ':', 'LineWidth', 1, 'Color', 'r');
+        plot(time, cur_coeffs .* (nontargetERP(i, :)-nontargetSTD(i,:))', ':', ...
+            time, cur_coeffs .* (nontargetERP(i, :)+nontargetSTD(i,:))',  ':', 'LineWidth', 1, 'Color', 'b');
+        %}
     end
     % Saving image as png to output folder
     f1.Position(3) = 1400;
