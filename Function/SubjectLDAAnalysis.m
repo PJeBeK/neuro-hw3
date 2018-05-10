@@ -39,7 +39,7 @@ function [model, train_accr, test_accr, cross_accr, train_word, test_word] = Sub
         test_word = GetRCWord(model, test_a, test_b);
     end
     
-    % draw per-electrode coefficients
+    % draw per-electrode ERP multiplied by LDA coefficients
     f1 = figure('visible', 'off');
     
     coeffs = model.Coeffs(1, 2).Linear;

@@ -1,4 +1,12 @@
 function word = GetRCWord(model, test_a, test_b)
+    %{
+        Inputs:
+            model: trained LDA
+            test_a, test_b: they will be merged and sorted by time, then
+            divded to 12 * 15 epochs. each epoch determines one character.
+        Output:
+            output: the detected word
+    %}
     ALPHABET='abcdefghijklmnopqrstuvwxyz0123456789';
     test_full = MergeByTime(test_a, test_b);
     rows = zeros(1, 5);
