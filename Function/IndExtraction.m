@@ -2,7 +2,7 @@ function [train_target, train_nontarget, test_target, test_nontarget] = IndExtra
     %{
         Inputs:
             s: struct of subject data
-        Outut:
+        Output:
             output: all indices for start target/non-target flashing of
             test/train
     %}

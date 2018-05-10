@@ -1,4 +1,12 @@
 function word = GetSCWord(model, test_a, test_b)
+    %{
+        Inputs:
+            model: trained LDA
+            test_a, test_b: they will be merged and sorted by time, then
+            divded to 36 * 15 epochs. each epoch determines one character.
+        Output:
+            output: the detected word
+    %}
     ALPHABET='abcdefghijklmnopqrstuvwxyz0123456789';
     test_full = MergeByTime(test_a, test_b);
     results = zeros(1, 5);
